@@ -1,0 +1,38 @@
+parameters:
+    git_dir: .
+    bin_dir: vendor/bin
+    hide_circumvention_tip: true
+    tasks:
+        composer:
+          strict: true
+        composer_require_checker: ~
+        git_blacklist:
+          keywords:
+              - "die("
+              - "var_dump("
+          triggered_by: ['php']
+        git_commit_message:
+          enforce_capitalized_subject: false
+          max_body_width: 250
+          max_subject_width: 72
+        jsonlint:
+          detect_key_conflicts: true
+        phpcpd:
+          exclude: ['vendor']
+          min_lines: 5
+          min_tokens: 70
+          triggered_by: ['php']
+        phpcs:
+          standard: 'phpcs.xml'
+          ignore_patterns: ['vendor']
+        phplint:
+          exclude: ['vendor']
+        phpmd:
+          exclude: ['vendor', 'tests']
+          ruleset: ['phpmd-ruleset.xml']
+        phpmnd: ~
+        phpstan:
+          level: 2
+        phpunit: ~
+        securitychecker: ~
+        yamllint: ~
