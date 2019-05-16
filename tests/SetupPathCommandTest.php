@@ -4,8 +4,7 @@ namespace Glamorous\Boiler\Tests;
 
 use Glamorous\Boiler\BoilerException;
 use Glamorous\Boiler\SetupPathCommand;
-use Glamorous\Boiler\Tests\Traits\ConfigurationTearDown;
-use Glamorous\Boiler\Tests\Traits\SetupFakeFilesystemAndDefaultConfig;
+use Glamorous\Boiler\Tests\Traits\SetupRealFilesystemAndDefaultConfig;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -14,7 +13,7 @@ use Symfony\Component\Console\Tester\CommandTester;
 
 class SetupPathCommandTest extends TestCase
 {
-    use SetupFakeFilesystemAndDefaultConfig, ConfigurationTearDown;
+    use SetupRealFilesystemAndDefaultConfig;
 
     public function test_that_execute_throws_exception_if_folder_not_exits()
     {

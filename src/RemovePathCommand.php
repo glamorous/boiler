@@ -34,7 +34,7 @@ class RemovePathCommand extends ConfigurationCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = $input->getArgument('directory');
+        $path = realpath($input->getArgument('directory'));
 
         if (!file_exists($path)) {
             throw new BoilerException('Directory does not exists');
