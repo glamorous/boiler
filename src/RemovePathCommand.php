@@ -20,7 +20,7 @@ class RemovePathCommand extends ConfigurationCommand
         $this
             ->setName('remove')
             ->setDescription('Remove the directory as a place to search for boiler-templates.')
-            ->addArgument('directory', InputArgument::REQUIRED);
+            ->addArgument('directory', InputArgument::OPTIONAL);
     }
 
     /**
@@ -34,9 +34,19 @@ class RemovePathCommand extends ConfigurationCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $path = realpath($input->getArgument('directory'));
+        $directory = $input->getArgument('directory');
 
-        if (!file_exists($path)) {
+        if (empty($directory)) {
+            $directory = getcwd();
+
+            if ($directory === false) {
+                throw new BoilerException('Current directory cannot be removed.');
+            }
+        }
+
+        $path = realpath($directory);
+
+        if ($path === false || !file_exists($path)) {
             throw new BoilerException('Directory does not exists');
         }
 

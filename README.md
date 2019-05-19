@@ -133,9 +133,9 @@ Commands
 
 `boiler create my-template`: Create an application based on the "my-template".
 
-`boiler setup my/path`: Set up a directory as a template directory.
+`boiler setup my/path`: Set up a directory as a template directory (path is optional, current directory will be taken).
 
-`boiler remove my/path`: Remove a directory from the template directories.
+`boiler remove my/path`: Remove a directory from the template directories (path is optional, current directory will be taken).
 
 `boiler paths`: Show all included template directories.
 

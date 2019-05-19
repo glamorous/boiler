@@ -58,7 +58,8 @@
         "squizlabs/php_codesniffer": "^3.0@dev",
         "phpstan/phpstan": "^0.10.0@dev",
         "povils/phpmnd": "^2.0@dev",
-        "maglnet/composer-require-checker": "^1.0@dev"
+        "maglnet/composer-require-checker": "^1.0@dev",
+        "php-mock/php-mock": "dev-master"
     },
     "bin": [
         "boiler"

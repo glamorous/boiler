@@ -4,6 +4,7 @@ namespace Glamorous\Boiler\Tests;
 
 use Glamorous\Boiler\BoilerException;
 use Glamorous\Boiler\RemovePathCommand;
+use Glamorous\Boiler\SetupPathCommand;
 use Glamorous\Boiler\Tests\Traits\SetupRealFilesystemAndDefaultConfig;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -15,6 +16,32 @@ class RemovePathCommandTest extends TestCase
 {
     use SetupRealFilesystemAndDefaultConfig;
 
+    public function test_that_execute_will_take_current_folder_if_no_folder_is_given()
+    {
+        $command = $this->getCommandWithChangedConfiguration(RemovePathCommand::class, [getcwd()], true);
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([]);
+
+        $stub = new ReflectionClass(RemovePathCommand::class);
+        $property = $stub->getProperty('configuration');
+        $property->setAccessible(true);
+
+        static::assertNotContains(getcwd(), $property->getValue($command)->getPaths());
+    }
+
+    public function test_that_execute_throws_exception_if_current_folder_not_have_correct_permissions()
+    {
+        $this->mock->enable();
+
+        static::expectException(BoilerException::class);
+        static::expectExceptionMessage('Current directory cannot be removed.');
+
+        $command = new RemovePathCommand();
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([]);
+
+        $this->mock->disable();
+    }
     public function test_that_execute_throws_exception_if_folder_not_exits()
     {
         static::expectException(BoilerException::class);
@@ -102,6 +129,9 @@ class RemovePathCommandTest extends TestCase
 
             public function removePath($path): bool
             {
+                if ($this->returnValue) {
+                    $this->paths = array_diff($this->paths, [$path]);
+                }
                 return $this->returnValue;
             }
         };

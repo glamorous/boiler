@@ -5,6 +5,8 @@ namespace Glamorous\Boiler\Tests;
 use Glamorous\Boiler\BoilerException;
 use Glamorous\Boiler\SetupPathCommand;
 use Glamorous\Boiler\Tests\Traits\SetupRealFilesystemAndDefaultConfig;
+use phpmock\MockBuilder;
+use phpmock\phpunit\PHPMock;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
@@ -14,6 +16,33 @@ use Symfony\Component\Console\Tester\CommandTester;
 class SetupPathCommandTest extends TestCase
 {
     use SetupRealFilesystemAndDefaultConfig;
+
+    public function test_that_execute_will_take_current_folder_if_no_folder_is_given()
+    {
+        $command = new SetupPathCommand();
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([]);
+
+        $stub = new ReflectionClass(SetupPathCommand::class);
+        $property = $stub->getProperty('configuration');
+        $property->setAccessible(true);
+
+        static::assertContains(getcwd(), $property->getValue($command)->getPaths());
+    }
+
+    public function test_that_execute_throws_exception_if_current_folder_not_have_correct_permissions()
+    {
+        $this->mock->enable();
+
+        static::expectException(BoilerException::class);
+        static::expectExceptionMessage('Current directory cannot be added.');
+
+        $command = new SetupPathCommand();
+        $commandTester = new CommandTester($command);
+        $commandTester->execute([]);
+
+        $this->mock->disable();
+    }
 
     public function test_that_execute_throws_exception_if_folder_not_exits()
     {
@@ -102,6 +131,9 @@ class SetupPathCommandTest extends TestCase
 
             public function addPath($path): bool
             {
+                if ($this->returnValue) {
+                    $this->paths[] = $path;
+                }
                 return $this->returnValue;
             }
         };
