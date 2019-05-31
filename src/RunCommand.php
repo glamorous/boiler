@@ -108,7 +108,7 @@ class RunCommand extends ConfigurationCommand
             return Yaml::parseFile($path);
         } catch (ParseException $exception) {
             throw new BoilerException(
-                'Template file `' . $path . '` could not be parsed',
+                'Template file located at `' . $path . '` could not be parsed',
                 $exception->getCode(),
                 $exception
             );
@@ -135,8 +135,16 @@ class RunCommand extends ConfigurationCommand
 
         return array_map(function ($fileName) {
             $templateFile = $this->findTemplateFile($fileName);
-            $template = ($templateFile !== null) ? $this->parseTemplateFile($templateFile->getRealPath()) : null;
-            return ($template) ? $template : [];
+            if ($templateFile === null) {
+                throw new BoilerException('Included file `' . $fileName . '` does not exists');
+            }
+            $template = $this->parseTemplateFile($templateFile->getPathname());
+
+            if (! $template) {
+                throw new BoilerException('Included file `' . $fileName . '` cannot be parsed');
+            }
+
+            return $template;
         }, $template['include']);
     }
 
@@ -193,10 +201,10 @@ class RunCommand extends ConfigurationCommand
             throw new BoilerException('No template found with name ' . $templateFileName);
         }
 
-        $template = $this->parseTemplateFile($templateFile->getRealPath());
+        $template = $this->parseTemplateFile($templateFile->getPathname());
 
         if (!is_array($template)) {
-            throw new BoilerException('Template could not be parsed as a boiler template');
+            throw new BoilerException('Template could not be parsed as a yaml file');
         }
 
         $extraTemplates = $this->getIncludedTemplates($template);
@@ -249,14 +257,15 @@ class RunCommand extends ConfigurationCommand
         $template = $this->getValidTemplateArray($templateFileName);
 
         $templateName = $input->getOption('name') ? $input->getOption('name') : $template['name'];
-        $output->writeln('<info>Installing ' . $templateName . '</info>');
-        $this->variables['template_name'] = $templateName;
-
-        $directoryName = $input->getOption('dir') ? $input->getOption('dir') : $templateFileName;
+        $directoryName = $input->getOption('dir') ?: $templateFileName;
 
         if (file_exists($directoryName)) {
             throw new BoilerException('Folder already exists');
         }
+
+        $output->writeln('<info>Installing ' . $templateName . '</info>');
+        $this->variables['template_name'] = $templateName;
+
         mkdir($directoryName);
         chdir($directoryName);
 

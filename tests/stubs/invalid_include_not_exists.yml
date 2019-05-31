@@ -1,0 +1,12 @@
+name: Stub test
+
+steps:
+  - my_step
+
+include:
+  - not_existing_file
+
+my_step:
+  name: My step
+  script:
+    - echo 'test'

@@ -1,0 +1,7 @@
+name: Stub test
+
+steps:
+  - step_without_name
+
+step_without_name:
+  my: step

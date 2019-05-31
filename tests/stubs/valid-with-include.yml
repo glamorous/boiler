@@ -1,0 +1,7 @@
+name: Stub valid included test
+
+include:
+  - to-include-valid
+
+steps:
+  - my_included_step

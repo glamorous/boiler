@@ -1,0 +1,11 @@
+name: Stub test
+
+steps:
+  - my_step
+
+include: not_an_array
+
+my_step:
+  name: My step
+  scripts:
+    - pwd

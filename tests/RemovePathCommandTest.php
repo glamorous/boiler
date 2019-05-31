@@ -82,6 +82,27 @@ class RemovePathCommandTest extends TestCase
         static::assertStringContainsString('Directory successfully removed', trim($display));
     }
 
+    public function test_that_execute_works_with_relative_urls()
+    {
+        chdir($this->pathToAdd);
+        $pathsForConfig = [$this->pathToRemove, $this->pathToAdd];
+        $command = $this->getCommandWithChangedConfiguration(RemovePathCommand::class, $pathsForConfig, true);
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(['directory' => '../remove']);
+        $commandTester->execute(['directory' => '.']);
+
+        $display = $commandTester->getDisplay();
+        static::assertStringContainsString('Directory successfully removed', trim($display));
+
+        $stub = new ReflectionClass(RemovePathCommand::class);
+        $property = $stub->getProperty('configuration');
+        $property->setAccessible(true);
+
+        $paths = $property->getValue($command)->getPaths();
+        static::assertNotContains($this->pathToAdd, $paths);
+        static::assertNotContains($this->pathToRemove, $paths);
+    }
+
     /**
      * Get initialized command with overrided configuration.
      *

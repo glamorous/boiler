@@ -1,0 +1,7 @@
+name: Stub test
+
+steps:
+  - step_without_script
+
+step_without_script:
+  name: My step without script

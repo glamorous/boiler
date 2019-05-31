@@ -1,0 +1,4 @@
+my_included_step:
+  name: My included valid step
+  script:
+    - echo 'my included step' > step.txt

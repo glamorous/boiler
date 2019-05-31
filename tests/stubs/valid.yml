@@ -1,0 +1,16 @@
+name: Stub valid test
+
+steps:
+  - my_first_step
+  - my_second_step
+
+my_first_step:
+  name: My valid first step
+  script:
+    - echo 'hello' > hello.txt
+    - echo 'world' > world.txt
+
+my_second_step:
+  name: My valid second step
+  script:
+    - echo 'world-updated' > world.txt

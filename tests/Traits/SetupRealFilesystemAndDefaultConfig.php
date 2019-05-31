@@ -38,18 +38,32 @@ trait SetupRealFilesystemAndDefaultConfig
     private $config;
 
     /**
+     * Current Directory.
+     *
+     * @var string
+     */
+    private $currentDirectory;
+
+    /**
      * Path to add.
      *
      * @var string
      */
-    private $pathToAdd = 'path/to/add';
+    private $pathToAdd;
 
     /**
      * Path to remove.
      *
      * @var string
      */
-    private $pathToRemove = 'path/to/remove';
+    private $pathToRemove;
+
+    /**
+     * Path to run command.
+     *
+     * @var string
+     */
+    private $pathToRunCommand;
 
     /**
      * Mock object for getcwd.
@@ -60,21 +74,21 @@ trait SetupRealFilesystemAndDefaultConfig
 
     public function setUp()
     {
-        $currentDirectory = getcwd();
-        $_SERVER['HOME'] = vfsStream::url($this->folderLocation);
-        $this->configurationLocation = $this->folderLocation . '/.config/boiler';
+        $this->currentDirectory = getcwd();
 
         vfsStreamWrapper::register();
         vfsStreamWrapper::setRoot(new vfsStreamDirectory($this->folderLocation));
         $this->config = Configuration::getInstance();
 
-        $pathToAdd = $currentDirectory . '/tests/tmp/' . $this->pathToAdd;
+        $pathToAdd = $this->currentDirectory . '/tests/tmp/path/to/add';
         mkdir($pathToAdd, 0777, true);
         $this->pathToAdd = $pathToAdd;
 
-        $pathToRemove = $currentDirectory . '/tests/tmp/' . $this->pathToRemove;
+        $pathToRemove = $this->currentDirectory . '/tests/tmp/path/to/remove';
         mkdir($pathToRemove, 0777, true);
         $this->pathToRemove = $pathToRemove;
+
+        $this->pathToRunCommand = $this->currentDirectory . '/tests/tmp';
 
         $builder = new MockBuilder();
         $builder->setNamespace('Glamorous\Boiler')
@@ -95,12 +109,16 @@ trait SetupRealFilesystemAndDefaultConfig
         $this->configurationTearDown();
 
         $finder = new Finder();
-        $finder->in(getcwd().'/tests/tmp')->directories()->sortByType()->reverseSorting();
+        $finder->in($this->currentDirectory . '/tests/tmp')->sortByType()->reverseSorting();
 
         foreach ($finder as $file) {
+            if ($file->isFile()) {
+                unlink($file->getPathname());
+                continue;
+            }
             rmdir($file->getPathname());
         }
 
-        rmdir(getcwd().'/tests/tmp');
+        rmdir($this->currentDirectory . '/tests/tmp');
     }
 }

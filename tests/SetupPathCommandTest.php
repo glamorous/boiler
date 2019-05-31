@@ -84,6 +84,26 @@ class SetupPathCommandTest extends TestCase
         static::assertStringContainsString('Directory successfully added', trim($display));
     }
 
+    public function test_that_execute_works_with_relative_urls()
+    {
+        chdir($this->pathToRemove);
+        $command = $this->getCommandWithChangedConfiguration(SetupPathCommand::class, [], true);
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(['directory' => '../add']);
+        $commandTester->execute(['directory' => '.']);
+
+        $display = $commandTester->getDisplay();
+        static::assertStringContainsString('Directory successfully added', trim($display));
+
+        $stub = new ReflectionClass(SetupPathCommand::class);
+        $property = $stub->getProperty('configuration');
+        $property->setAccessible(true);
+
+        $paths = $property->getValue($command)->getPaths();
+        static::assertContains($this->pathToAdd, $paths);
+        static::assertContains($this->pathToRemove, $paths);
+    }
+
     /**
      * Get initialized command with overrided configuration.
      *

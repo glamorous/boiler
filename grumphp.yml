@@ -35,4 +35,6 @@ parameters:
           level: 2
         phpunit: ~
         securitychecker: ~
-        yamllint: ~
+        yamllint:
+          whitelist_patterns:
+            - /tests\/stub\/unparseable.yml/

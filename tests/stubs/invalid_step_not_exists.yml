@@ -1,0 +1,4 @@
+name: Stub test
+
+steps:
+  - my_not_existing_step
