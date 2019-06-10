@@ -134,6 +134,16 @@ class RunCommandTest extends TestCase
         static::assertEquals('my included step', trim(file_get_contents($createdDirectory . '/step.txt')));
     }
 
+    public function test_that_variables_are_replaced_in_scripts_with_given_name()
+    {
+        $this->assertValidVariable('My Test', ['--name' => 'My Test']);
+    }
+
+    public function test_that_variables_are_replaced_in_scripts_without_given_name()
+    {
+        $this->assertValidVariable('Stub valid test with variable');
+    }
+
     /**
      * Execute the command with a given template and test for specific output message and return output.
      *
@@ -161,6 +171,32 @@ class RunCommandTest extends TestCase
         static::assertStringContainsString(sprintf($outputExpectation, $filePath), $output);
 
         return $output;
+    }
+
+    /**
+     * Assert valid execution with variables filled in the steps.
+     *
+     * @param string $expectedProjectName
+     * @param array $arguments
+     *
+     * @throws ReflectionException
+     */
+    protected function assertValidVariable(string $expectedProjectName, array $arguments = [])
+    {
+        chdir($this->pathToRunCommand);
+        $output = $this->assertOutputStringWithGivenFile(
+            'valid-variable',
+            $expectedProjectName,
+            $arguments
+        );
+        static::assertStringContainsString('Executing My valid variable step', $output);
+        $createdDirectory = $this->pathToRunCommand . '/valid-variable';
+        static::assertDirectoryExists($createdDirectory);
+        static::assertFileExists($createdDirectory . '/hello.txt');
+
+        $helloContent = trim(file_get_contents($createdDirectory . '/hello.txt'));
+        static::assertStringContainsString($expectedProjectName, $helloContent);
+        static::assertStringNotContainsString('{#PROJECT_NAME#}', $helloContent);
     }
 
     /**
