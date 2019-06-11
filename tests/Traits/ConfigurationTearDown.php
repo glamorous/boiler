@@ -2,7 +2,7 @@
 
 namespace Glamorous\Boiler\Tests\Traits;
 
-use Glamorous\Boiler\Configuration;
+use Glamorous\Boiler\Helpers\Configuration;
 use ReflectionClass;
 
 trait ConfigurationTearDown

@@ -1,0 +1,9 @@
+name: Stub valid directory test
+
+steps:
+  - my_first_step
+
+my_first_step:
+  name: My valid first step
+  script:
+    - echo 'hello' > hello.txt

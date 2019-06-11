@@ -2,6 +2,7 @@
 
 namespace Glamorous\Boiler;
 
+use Glamorous\Boiler\Helpers\Configuration;
 use Symfony\Component\Console\Command\Command;
 
 abstract class ConfigurationCommand extends Command

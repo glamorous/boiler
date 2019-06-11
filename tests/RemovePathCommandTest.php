@@ -4,7 +4,6 @@ namespace Glamorous\Boiler\Tests;
 
 use Glamorous\Boiler\BoilerException;
 use Glamorous\Boiler\RemovePathCommand;
-use Glamorous\Boiler\SetupPathCommand;
 use Glamorous\Boiler\Tests\Traits\SetupRealFilesystemAndDefaultConfig;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;

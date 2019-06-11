@@ -2,6 +2,11 @@
 
 See what kind of changes were done to the "Boiler"-package.
 
+## 0.1.0 - 2019-06-12
+
+- There is now support to have template directory with a yaml file inside it. 
+Using a directory will copy all included files to the new directory.
+
 ## 0.0.3 - 2019-05-20
 
 - Make the directory argument optional for setup- and remove path commands.

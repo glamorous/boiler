@@ -1,6 +1,6 @@
 <?php
 
-namespace Glamorous\Boiler;
+namespace Glamorous\Boiler\Helpers;
 
 class Configuration
 {

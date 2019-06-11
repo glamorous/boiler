@@ -2,8 +2,7 @@
 
 namespace Glamorous\Boiler\Tests\Traits;
 
-use Glamorous\Boiler\Configuration;
-use org\bovigo\vfs\vfsStream;
+use Glamorous\Boiler\Helpers\Configuration;
 use org\bovigo\vfs\vfsStreamDirectory;
 use org\bovigo\vfs\vfsStreamWrapper;
 use phpmock\Mock;
@@ -33,7 +32,7 @@ trait SetupRealFilesystemAndDefaultConfig
     /**
      * Configuration object.
      *
-     * @var Configuration
+     * @var Glamorous\Boiler\Helpers\Configuration;
      */
     private $config;
 
@@ -109,7 +108,7 @@ trait SetupRealFilesystemAndDefaultConfig
         $this->configurationTearDown();
 
         $finder = new Finder();
-        $finder->in($this->currentDirectory . '/tests/tmp')->sortByType()->reverseSorting();
+        $finder->in($this->currentDirectory . '/tests/tmp')->sortByType()->reverseSorting()->ignoreDotFiles(false);
 
         foreach ($finder as $file) {
             if ($file->isFile()) {

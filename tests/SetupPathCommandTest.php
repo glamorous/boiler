@@ -5,7 +5,6 @@ namespace Glamorous\Boiler\Tests;
 use Glamorous\Boiler\BoilerException;
 use Glamorous\Boiler\SetupPathCommand;
 use Glamorous\Boiler\Tests\Traits\SetupRealFilesystemAndDefaultConfig;
-use phpmock\MockBuilder;
 use phpmock\phpunit\PHPMock;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;

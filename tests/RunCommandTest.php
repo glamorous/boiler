@@ -144,6 +144,40 @@ class RunCommandTest extends TestCase
         $this->assertValidVariable('Stub valid test with variable');
     }
 
+
+    public function test_that_template_folder_will_copy_all_files_without_the_yaml_file_itself_and_replace_variables()
+    {
+        $mainDirectory = vfsStream::url($this->folderLocation);
+        $templateDirectory = $mainDirectory . '/template-dir/';
+        $currentTemplateDirectory = __DIR__ . '/stubs/template-dir/';
+        mkdir($templateDirectory);
+        mkdir($templateDirectory . '/subfolder');
+        copy($currentTemplateDirectory . 'template-dir.yml', $templateDirectory . '/template-dir.yml');
+        copy($currentTemplateDirectory . 'README', $templateDirectory . '/README');
+        copy($currentTemplateDirectory . 'subfolder/.gitignore', $templateDirectory . '/subfolder/.gitignore');
+        chdir($this->pathToRunCommand);
+
+        $output = $this->executeAndReturnOutput(
+            [$mainDirectory],
+            ['template' => 'template-dir', '--name' => 'My Test']
+        );
+        static::assertStringContainsString('Installing My Test', $output);
+        static::assertStringContainsString('Executing My valid first step', $output);
+        $createdDirectory = $this->pathToRunCommand . '/template-dir';
+        static::assertDirectoryExists($createdDirectory);
+        static::assertFileExists($createdDirectory . '/hello.txt');
+        static::assertEquals('hello', trim(file_get_contents($createdDirectory . '/hello.txt')));
+
+        static::assertDirectoryExists($createdDirectory . '/subfolder');
+        static::assertFileExists($createdDirectory . '/subfolder/.gitignore');
+        static::assertFileExists($createdDirectory . '/README');
+        static::assertFileNotExists($createdDirectory . '/template-dir.yml');
+
+        $readmeContents = file_get_contents($createdDirectory . '/README');
+        static::assertStringContainsString('My Test', $readmeContents);
+        static::assertStringNotContainsString('{#PROJECT_NAME#}', $readmeContents);
+    }
+
     /**
      * Execute the command with a given template and test for specific output message and return output.
      *

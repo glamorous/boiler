@@ -37,6 +37,9 @@ boiler setup my/path
 
 ### Create a boiler templates
 
+
+#### Single boiler-file
+
 A boiler template is a simple yaml file with a couple of steps to execute, so the result is a project.
 
 ```
@@ -66,6 +69,12 @@ git:
 In the above example:
 - added a README.md file
 - initialize git & created first commit
+
+#### Boiler directory
+
+Just like a single boiler yaml-file, you can create a directory with the same name like the yaml-file. 
+All files that are included in this directory will be copied to the new directory.
+The only file that isn't copied is the yaml-template-file.
 
 ### Create a project with your created template
 

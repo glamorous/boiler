@@ -2,8 +2,8 @@
 
 namespace Glamorous\Boiler\Tests;
 
-use Glamorous\Boiler\Configuration;
 use Glamorous\Boiler\ConfigurationCommand;
+use Glamorous\Boiler\Helpers\Configuration;
 use Glamorous\Boiler\Tests\Traits\ConfigurationTearDown;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
