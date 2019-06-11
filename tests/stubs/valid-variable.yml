@@ -1,0 +1,9 @@
+name: Stub valid test with variable
+
+steps:
+  - my_step
+
+my_step:
+  name: My valid variable step
+  script:
+    - echo 'hello {#PROJECT_NAME#}' > hello.txt
