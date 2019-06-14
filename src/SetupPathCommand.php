@@ -34,6 +34,10 @@ class SetupPathCommand extends ConfigurationCommand
     {
         $directory = $input->getArgument('directory');
 
+        if (is_array($directory)) {
+            throw new BoilerException('Only one directory is allowed.');
+        }
+
         if (empty($directory)) {
             $directory = getcwd();
 

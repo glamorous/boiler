@@ -41,6 +41,21 @@ class RemovePathCommandTest extends TestCase
 
         $this->mock->disable();
     }
+
+    public function test_that_execute_throws_exception_if_more_than_one_folder_is_given()
+    {
+        $this->mock->enable();
+
+        static::expectException(BoilerException::class);
+        static::expectExceptionMessage('Only one directory is allowed.');
+
+        $command = new RemovePathCommand();
+        $commandTester = new CommandTester($command);
+        $commandTester->execute(['directory' => ['folder/first', 'folder/two']]);
+
+        $this->mock->disable();
+    }
+
     public function test_that_execute_throws_exception_if_folder_not_exits()
     {
         static::expectException(BoilerException::class);
