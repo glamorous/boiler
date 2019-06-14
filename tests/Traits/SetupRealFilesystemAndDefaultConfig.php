@@ -32,7 +32,7 @@ trait SetupRealFilesystemAndDefaultConfig
     /**
      * Configuration object.
      *
-     * @var Glamorous\Boiler\Helpers\Configuration;
+     * @var Configuration;
      */
     private $config;
 
