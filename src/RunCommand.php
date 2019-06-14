@@ -115,6 +115,11 @@ class RunCommand extends ConfigurationCommand
         }
 
         $templateFileName = $input->getArgument('template');
+
+        if (is_array($templateFileName)) {
+            throw new BoilerException('Only one template is allowed.');
+        }
+
         $template = Template::getInstance()->searchTemplateByFilenameInGivenPaths($templateFileName, $this->paths);
 
         $templateName = $input->getOption('name') ? $input->getOption('name') : $template['name'];

@@ -26,6 +26,12 @@ class RunCommandTest extends TestCase
         static::assertStringContainsString('No template found with name', $output);
     }
 
+    public function test_error_is_shown_if_more_than_one_template_is_given()
+    {
+        $output = $this->executeAndReturnOutput([$this->pathToAdd], ['template' => ['empty', 'valid']]);
+        static::assertStringContainsString('Only one template is allowed.', $output);
+    }
+
     public function test_error_is_show_if_template_could_not_be_parsed()
     {
         $this->assertOutputStringWithGivenFile('unparseable', 'Template file located at `%s` could not be parsed');
