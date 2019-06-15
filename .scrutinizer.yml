@@ -28,7 +28,7 @@ coding_style:
                 linefeed_character: newline
             before_parentheses:
                 function_declaration: false
-                closure_definition: false
+                closure_definition: true
                 function_call: false
                 if: true
                 for: true
@@ -68,7 +68,7 @@ coding_style:
             within:
                 brackets: false
                 array_initializer: false
-                grouping: false
+                grouping: true
                 function_call: false
                 function_declaration: false
                 if: false
