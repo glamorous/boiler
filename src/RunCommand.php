@@ -12,6 +12,13 @@ use Symfony\Component\Finder\Finder;
 class RunCommand extends ConfigurationCommand
 {
     /**
+     * Input to get arguments from.
+     *
+     * @var InputInterface
+     */
+    private $input;
+
+    /**
      * Array with the paths.
      *
      * @var array
@@ -108,19 +115,15 @@ class RunCommand extends ConfigurationCommand
      */
     private function executeCommand(InputInterface $input, OutputInterface $output): void
     {
+        $this->input = $input;
+
         $this->paths = $this->configuration->getPaths();
 
         if (empty($this->paths)) {
             throw new BoilerException('No paths configured');
         }
 
-        $templateFileName = $input->getArgument('template');
-
-        if (empty($templateFileName)) {
-            throw new BoilerException('No template given.');
-        } elseif (is_array($templateFileName)) {
-            throw new BoilerException('Only one template is allowed.');
-        }
+        $templateFileName = $this->getTemplateFileName();
 
         $template = Template::getInstance()->searchTemplateByFilenameInGivenPaths($templateFileName, $this->paths);
 
@@ -174,5 +177,27 @@ class RunCommand extends ConfigurationCommand
                 }
             }
         }//end foreach
+    }
+
+    /**
+     * Get filename of the given template.
+     *
+     * @return string
+     *
+     * @throws BoilerException
+     */
+    private function getTemplateFileName(): string
+    {
+        $templateFileName = $this->input->getArgument('template');
+
+        if (empty($templateFileName)) {
+            throw new BoilerException('No template given.');
+        }
+
+        if (is_array($templateFileName)) {
+            throw new BoilerException('Only one template is allowed.');
+        }
+
+        return $templateFileName;
     }
 }
