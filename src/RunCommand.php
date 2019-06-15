@@ -116,7 +116,9 @@ class RunCommand extends ConfigurationCommand
 
         $templateFileName = $input->getArgument('template');
 
-        if (is_array($templateFileName)) {
+        if (empty($templateFileName)) {
+            throw new BoilerException('No template given.');
+        } elseif (is_array($templateFileName)) {
             throw new BoilerException('Only one template is allowed.');
         }
 

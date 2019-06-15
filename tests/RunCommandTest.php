@@ -14,6 +14,15 @@ class RunCommandTest extends TestCase
 {
     use SetupRealFilesystemAndDefaultConfig;
 
+    public function test_error_is_shown_if_no_template_is_given()
+    {
+        $output = $this->executeAndReturnOutput([$this->pathToAdd], ['template' => null]);
+        static::assertStringContainsString('No template given', $output);
+
+        $output = $this->executeAndReturnOutput([$this->pathToAdd], ['template' => '']);
+        static::assertStringContainsString('No template given', $output);
+    }
+
     public function test_error_is_shown_if_no_paths_are_configured()
     {
         $output = $this->executeAndReturnOutput([], ['template' => 'my-template']);
