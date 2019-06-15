@@ -22,7 +22,6 @@
         "symfony/finder": "^4.2",
         "symfony/yaml": "^4.2"
     },
-    "minimum-stability": "dev",
     "autoload": {
         "psr-4": {
             "Glamorous\\Boiler\\": "src/"
