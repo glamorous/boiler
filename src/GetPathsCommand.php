@@ -36,6 +36,7 @@ class GetPathsCommand extends ConfigurationCommand
 
         if (empty($paths)) {
             $output->writeln('<info>No paths set...</info>');
+
             return;
         }
 
@@ -44,8 +45,7 @@ class GetPathsCommand extends ConfigurationCommand
             ->setHeaders(['Path'])
             ->setRows(array_map(function ($path) {
                 return [$path];
-            }, $paths))
-        ;
+            }, $paths));
         $table->render();
     }
 }

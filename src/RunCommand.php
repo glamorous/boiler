@@ -152,7 +152,7 @@ class RunCommand extends ConfigurationCommand
         $finder = new Finder();
         foreach ($this->paths as $directory) {
             $templateDir = $directory . '/' . $name;
-            if (! is_dir($templateDir)) {
+            if (!is_dir($templateDir)) {
                 continue;
             }
 

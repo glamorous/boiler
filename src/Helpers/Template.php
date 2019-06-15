@@ -195,7 +195,7 @@ class Template
             }
             $template = $this->parseTemplateFile($templateFile->getPathname());
 
-            if (! $template) {
+            if (!$template) {
                 throw new BoilerException('Included file `' . $fileName . '` cannot be parsed');
             }
 
