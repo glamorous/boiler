@@ -81,10 +81,6 @@ class Template
     {
         $templateFile = $this->getTemplate($templateFileName);
 
-        if (is_null($templateFile)) {
-            throw new BoilerException('No template found with name ' . $templateFileName);
-        }
-
         $pathName = $templateFile->getPathname();
         $template = $this->parseTemplateFile($pathName);
 
@@ -100,7 +96,9 @@ class Template
      *
      * @param string $name
      *
-     * @return null|SplFileInfo
+     * @return SplFileInfo
+     *
+     * @throws BoilerException
      */
     protected function getTemplate(string $name): ?SplFileInfo
     {
@@ -118,7 +116,7 @@ class Template
             }
         }
 
-        return null;
+        throw new BoilerException('Boiler-file with name `' . $name . '` does not exists.');
     }
 
     /**
@@ -190,9 +188,6 @@ class Template
 
         return array_map(function ($fileName) {
             $templateFile = $this->getTemplate($fileName);
-            if ($templateFile === null) {
-                throw new BoilerException('Included file `' . $fileName . '` does not exists');
-            }
             $template = $this->parseTemplateFile($templateFile->getPathname());
 
             if (!$template) {

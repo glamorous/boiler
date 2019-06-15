@@ -32,7 +32,7 @@ class RunCommandTest extends TestCase
     public function test_error_is_shown_if_template_is_not_found()
     {
         $output = $this->executeAndReturnOutput([$this->pathToAdd], ['template' => 'my-template']);
-        static::assertStringContainsString('No template found with name', $output);
+        static::assertStringContainsString('Boiler-file with name `my-template` does not exists.', $output);
     }
 
     public function test_error_is_shown_if_more_than_one_template_is_given()
@@ -94,7 +94,7 @@ class RunCommandTest extends TestCase
     {
         $this->assertOutputStringWithGivenFile(
             'invalid_include_not_exists',
-            'Included file `not_existing_file` does not exists'
+            'Boiler-file with name `not_existing_file` does not exists'
         );
     }
 

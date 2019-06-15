@@ -9,6 +9,13 @@ use Symfony\Component\Console\Output\OutputInterface;
 class RemovePathCommand extends ConfigurationCommand
 {
     /**
+     * Input to get arguments from.
+     *
+     * @var InputInterface
+     */
+    private $input;
+
+    /**
      * Configure the command options.
      *
      * @return void
@@ -32,20 +39,9 @@ class RemovePathCommand extends ConfigurationCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $directory = $input->getArgument('directory');
+        $this->input = $input;
 
-        if (is_array($directory)) {
-            throw new BoilerException('Only one directory is allowed.');
-        }
-
-        if (empty($directory)) {
-            $directory = getcwd();
-
-            if ($directory === false) {
-                throw new BoilerException('Current directory cannot be removed.');
-            }
-        }
-
+        $directory = $this->getDirectory();
         $path = realpath($directory);
 
         if ($path === false || !file_exists($path)) {
@@ -65,5 +61,31 @@ class RemovePathCommand extends ConfigurationCommand
         }
 
         $output->writeln($resultMessage);
+    }
+
+    /**
+     * Get the directory given (or current one).
+     *
+     * @return string
+     *
+     * @throws BoilerException
+     */
+    protected function getDirectory()
+    {
+        $directory = $this->input->getArgument('directory');
+
+        if (is_array($directory)) {
+            throw new BoilerException('Only one directory is allowed.');
+        }
+
+        if (empty($directory)) {
+            $directory = getcwd();
+
+            if ($directory === false) {
+                throw new BoilerException('Current directory cannot be removed.');
+            }
+        }
+
+        return $directory;
     }
 }
