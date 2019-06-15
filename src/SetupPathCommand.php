@@ -70,7 +70,7 @@ class SetupPathCommand extends ConfigurationCommand
      *
      * @throws BoilerException
      */
-    protected function getDirectory()
+    protected function getDirectory(): string
     {
         $directory = $this->input->getArgument('directory');
 
