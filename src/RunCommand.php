@@ -171,7 +171,6 @@ class RunCommand extends ConfigurationCommand
                 }
 
                 if ($file->isFile()) {
-                    copy($file->getPathname(), $file->getRelativePathname());
                     file_put_contents($file->getRelativePathname(), $this->replaceVariables($file->getContents()));
                     continue;
                 }
